@@ -3,143 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Text Authentication</title>
-    <!-- Styling for the client UI -->
-    <style>
-	body {
-        background-color: #222629;
-        display: flex; /* Use Flexbox to arrange items in a column */
-        flex-direction: column; /* Arrange items vertically */
-        align-items: center; /* Center items horizontally */
-        justify-content: center; /* Center items vertically */
-        height: 100vh; /* Ensure full height of the viewport */
-        margin: 0; /* Remove default margin */
-        font-family: system-ui;
-    }
-    h1 {
-        color: #FFFFFF;
-        margin-bottom: 20px; 
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px; 
-    }
-    label {
-        color: #86C232;
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-    button {
-        background-color: #86C232;
-        border: none;
-        color: #FFFFFF;
-        font-size: 20px;
-        font-weight: bold;
-        padding: 10px 20px; 
-        cursor: pointer;
-        margin-top: 10px;
-        width: 140px;
-    }
-    input {
-        font-size: 20px;
-        margin-bottom: 10px; 
-        width: 200px;
-    }
-    .reg {
-        color: #86C232;
-        font-size: 20px;
-        margin-top: 10px;
-    }
-    a {
-        color: #86C232;
-        text-decoration: underline;
-        margin-left: 5px; 
-    }
-    #error {
-        color: #e10000;
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 10px;
-    }
-    </style>
-    <script src="js/config.json"></script>
-    <script>
-        var apiEndPoints = {}
-        fetch('js/config.json')
-        .then(response => response.json())
-        .then(data => {
-            apiEndPoints = data.apiEndPoints;
-            console.log(apiEndPoints);
-        })
-        .catch(error => console.error('Error fetching config:', error));
-
-        var callAPI = (name, number) => {
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"number": number});
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-            // Make API call to check if number exists in the database
-            fetch(apiEndPoints.checkNumber, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                if (data.statusCode === 404) {
-                    // Number does not exist, proceed with API call to add name and number to UserData db
-                    return callAPItoAdd(name, number);
-                } else if (data.statusCode === 200) {
-                    // Number exists, display error message
-                    document.getElementById('error').textContent = 'Number already exists in the database. Please Login';
-                } else {
-                    throw new Error('Unexpected response from server.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // callAPItoAdd function to add name and number to the database
-        var callAPItoAdd = (name, number) => {
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"name": name, "number": number});
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-            // Make API call to add name and number to the database
-            fetch(apiEndPoints.addToDatabase, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                var name = data.name;
-                var number = data.number;
-                var user_id = data.user_id;
-                var url = "schedule_reminder.html?name=" + encodeURIComponent(name) + "&number=" + encodeURIComponent(number) + "&user_id=" + encodeURIComponent(user_id);
-                window.location.href = url;
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
+    <link rel="stylesheet" type="text/css" href="css/indexCSS.css">
+    <script src="js/indexJS.js" defer></script>
 </head>
 <body>
     <h1>Text Reminder User Authentication</h1>
-	<form>
+    <form>
         <label>Full Name:</label>
         <input type="text" id="name">
         <label>Mobile Number:</label>
         <input type="text" id="number">
-        <!-- set button onClick method to call function we defined passing input values as parameters -->
         <button type="button" onclick="callAPI(document.getElementById('name').value,document.getElementById('number').value)">Register</button>
     </form>
-    <p class="reg">Already Registered?
-        <a href="login.html">Login Here</a>
-    </p>
+    <p class="reg">Already Registered? <a href="login.html">Login Here</a></p>
     <p id="error"></p>
 </body>
 </html>
