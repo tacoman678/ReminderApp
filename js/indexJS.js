@@ -59,7 +59,7 @@ var callAPItoAdd = (name, number) => {
     .then(response => response.json())
     .then(data => {
         if (data.statusCode === 404) {
-            document.getElementById('error').textContent = 'Please enter a valid number';
+            document.getElementById('error').textContent = 'Please enter a valid name and number';
         }
         else{
             var name = data.name;
