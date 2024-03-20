@@ -7,6 +7,15 @@ fetch('js/config.json')
 })
 .catch(error => console.error('Error fetching config:', error));
 
+document.addEventListener('DOMContentLoaded', function() {
+    var button = document.querySelector('#registerButton');
+    button.addEventListener('click', function() {
+        var name = document.getElementById('name').value;
+        var number = document.getElementById('number').value;
+        callAPI(name, number);
+    });
+});
+
 var callAPI = (name, number) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
