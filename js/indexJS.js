@@ -3,7 +3,6 @@ fetch('js/config.json')
 .then(response => response.json())
 .then(data => {
     apiEndPoints = data.apiEndPoints;
-    console.log(apiEndPoints);
 })
 .catch(error => console.error('Error fetching config:', error));
 
@@ -19,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 var callAPI = (name, number) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({"number": number});
+    console.log(name);
+    var raw = JSON.stringify({"number": number, "name": name});
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -36,6 +36,8 @@ var callAPI = (name, number) => {
         } else if (data.statusCode === 200) {
             // Number exists, display error message
             document.getElementById('error').textContent = 'Number already exists in the database. Please Login';
+        } else if (data.statusCode === 400) {
+            document.getElementById('error').textContent = 'Please enter a valid name and number';
         } else {
             throw new Error('Unexpected response from server.');
         }
@@ -58,16 +60,11 @@ var callAPItoAdd = (name, number) => {
     fetch(apiEndPoints.addToDatabase, requestOptions)
     .then(response => response.json())
     .then(data => {
-        if (data.statusCode === 404) {
-            document.getElementById('error').textContent = 'Please enter a valid name and number';
-        }
-        else{
-            var name = data.name;
-            var number = data.number;
-            var user_id = data.user_id;
-            var url = "schedule_reminder.html?name=" + encodeURIComponent(name) + "&number=" + encodeURIComponent(number) + "&user_id=" + encodeURIComponent(user_id);
-            window.location.href = url;
-        }
+        var name = data.name;
+        var number = data.number;
+        var user_id = data.user_id;
+        var url = "schedule_reminder.html?name=" + encodeURIComponent(name) + "&number=" + encodeURIComponent(number) + "&user_id=" + encodeURIComponent(user_id);
+        window.location.href = url;
     })
     .catch(error => console.error('Error:', error));
 }
