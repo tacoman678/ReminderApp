@@ -3,22 +3,26 @@ fetch('js/config.json')
 .then(response => response.json())
 .then(data => {
     apiEndPoints = data.apiEndPoints;
-    console.log(apiEndPoints);
 })
 .catch(error => console.error('Error fetching config:', error));
 
 document.addEventListener('DOMContentLoaded', function() {
-    var button = document.querySelector('#loginButton');
+    var button = document.querySelector('#registerButton');
     button.addEventListener('click', function() {
         var number = document.getElementById('number').value;
-        callAPI(number);
+        var name = "placeholder"
+        if (number.trim() !== '') {
+            callAPI(name, number);
+        } else {
+            document.getElementById('error').textContent = 'Please enter a number.';
+        }
     });
 });
 
-var callAPI = (number) => {
+var callAPI = (name, number) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({"number": number});
+    var raw = JSON.stringify({"name": name, "number": number});
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,

@@ -6,22 +6,6 @@
         <title>Schedule Reminders</title>
         <link rel="stylesheet" href="css/indexCSS.css">
         <script src="js/schedule_reminder.js"></script>
-        <script>
-            function extractParameters(url) {
-                var parameters = {};
-                var queryString = url.split('?')[1];
-                if (queryString) {
-                    var pairs = queryString.split('&');
-                    for (var i = 0; i < pairs.length; i++) {
-                        var pair = pairs[i].split('=');
-                        var key = decodeURIComponent(pair[0]);
-                        var value = decodeURIComponent(pair[1]);
-                        parameters[key] = value;
-                    }
-                }
-            return parameters;
-            }
-        </script>
         <style>
             #form_addition {
                 display: flex;
@@ -45,14 +29,6 @@
     </head>
     <body>
         <h1 id="userInfo"></h1>
-        <script>
-            var params = extractParameters(window.location.href);
-            var name = params['name'];
-            var number = params['number'];
-            var user_id = params['user_id'];
-            var message = "Hello " + name + " with mobile number: " + number + " and user id: " + user_id;
-            document.getElementById('userInfo').textContent = message;
-        </script>
         <form id="reminder_form">
             <label>Reminder type (Appointment, Task, Event etc.):</label>
             <input type="text" id="reminder_type" required>

@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
 var callAPI = (name, number) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    console.log(name);
     var raw = JSON.stringify({"name": name, "number": number});
     var requestOptions = {
         method: 'POST',
