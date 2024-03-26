@@ -8,18 +8,24 @@ fetch('js/config.json')
 
 document.addEventListener('DOMContentLoaded', function() {
     var button = document.querySelector('#registerButton');
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
         var name = document.getElementById('name').value;
         var number = document.getElementById('number').value;
-        callAPI(name, number);
+        if (name.trim() !== '' && number.trim() !== '') {
+            callAPI(name, number);
+        } else {
+            document.getElementById('error').textContent = 'Please enter both name and number.';
+        }
     });
 });
+
 
 var callAPI = (name, number) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     console.log(name);
-    var raw = JSON.stringify({"number": number, "name": name});
+    var raw = JSON.stringify({"name": name, "number": number});
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -37,7 +43,7 @@ var callAPI = (name, number) => {
             // Number exists, display error message
             document.getElementById('error').textContent = 'Number already exists in the database. Please Login';
         } else if (data.statusCode === 400) {
-            document.getElementById('error').textContent = 'Please enter a valid name and number';
+            document.getElementById('error').textContent = 'Please enter a valid US number';
         } else {
             throw new Error('Unexpected response from server.');
         }

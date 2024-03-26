@@ -55,14 +55,15 @@
         </script>
         <form id="reminder_form">
             <label>Reminder type (Appointment, Task, Event etc.):</label>
-            <input type="text" id="reminder_type">
+            <input type="text" id="reminder_type" required>
             <label>Date:</label>
-            <input type="date" id="datepicker">
+            <input type="date" id="datepicker" required>
             <label>Time:</label>
-            <input type="time" id="time">
+            <input type="time" id="time" required>
             <label>Recurring?</label>
             <input type="checkbox" id="recurring">
         </form>
-        <button type="submit" id="submit">Schedule Reminder</button>
+        <button type="submit" id="registerButton">Schedule Reminder</button>
+        <p id="error"></p>
     </body>
 </html>
